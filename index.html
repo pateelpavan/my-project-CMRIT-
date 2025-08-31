@@ -1,0 +1,1073 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CMRIT NSS UNIT</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .container {
+            width: 100%;
+            max-width: 900px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            margin: 20px 0;
+            transition: all 0.3s ease;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 2.8rem;
+            margin-bottom: 20px;
+            color: #FFD700;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        h2 {
+            color: #4DFF4D;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        h3 {
+            color: #FFD700;
+            margin: 15px 0;
+            text-align: center;
+        }
+
+        .page {
+            display: none;
+        }
+
+        .active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #FFD700;
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 12px 15px;
+            border: none;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.2);
+            color: #fff;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            background: rgba(255, 255, 255, 0.3);
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+        }
+
+        input::placeholder, textarea::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        button {
+            background: linear-gradient(to right, #FF416C, #FF4B2B);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            display: block;
+            margin: 20px auto;
+            width: 200px;
+        }
+
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .password-hint {
+            text-align: center;
+            font-size: 0.9rem;
+            margin-top: 10px;
+            color: #FFD700;
+        }
+
+        .photo-preview {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 5px solid #FFD700;
+            margin: 15px auto;
+            display: block;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .events-gallery {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 20px;
+            justify-content: center;
+        }
+
+        .event-photo {
+            width: 120px;
+            height: 120px;
+            border-radius: 10px;
+            object-fit: cover;
+            border: 2px solid #FFD700;
+            transition: transform 0.3s ease;
+        }
+
+        .event-photo:hover {
+            transform: scale(1.1);
+        }
+
+        .portfolio-container {
+            text-align: center;
+        }
+
+        .portfolio-photo {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 5px solid #FFD700;
+            margin: 0 auto 20px;
+            display: block;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .portfolio-details {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+        }
+
+        .portfolio-details p {
+            margin: 10px 0;
+            font-size: 18px;
+            text-align: left;
+            padding-left: 20px;
+        }
+
+        .portfolio-details strong {
+            color: #FFD700;
+        }
+
+        #qrcode {
+            margin: 20px auto;
+            padding: 10px;
+            background: white;
+            border-radius: 10px;
+            display: inline-block;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            padding: 20px;
+            font-weight: bold;
+            font-size: 1.5rem;
+            color: #FFD700;
+            animation: glow 2s ease-in-out infinite alternate;
+            width: 100%;
+        }
+
+        @keyframes glow {
+            from { text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #FFD700, 0 0 20px #FFD700; }
+            to { text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #FFD700, 0 0 40px #FFD700; }
+        }
+
+        .file-input-label {
+            display: block;
+            padding: 10px 15px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 15px;
+        }
+
+        .file-input-label:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        input[type="file"] {
+            display: none;
+        }
+
+        .events-container {
+            margin-top: 20px;
+        }
+
+        .event-item {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+
+        .event-title {
+            font-weight: bold;
+            color: #4DFF4D;
+            margin-top: 10px;
+            display: block;
+        }
+
+        .user-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .user-card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 15px;
+            width: 200px;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .user-card:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .user-card img {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #FFD700;
+            margin-bottom: 10px;
+        }
+
+        .back-button {
+            background: linear-gradient(to right, #1a2a6c, #b21f1f);
+            margin-top: 10px;
+        }
+
+        .instructions {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 15px;
+            border-radius: 10px;
+            margin: 15px 0;
+            font-size: 0.9rem;
+        }
+
+        .instructions i {
+            color: #FFD700;
+            margin-right: 5px;
+        }
+
+        .logo-container {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .logo {
+            text-align: center;
+        }
+
+        .logo i {
+            font-size: 3rem;
+            color: #FFD700;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+        }
+
+        .logo-img {
+            height: 80px;
+            width: auto;
+            filter: drop-shadow(0 0 8px rgba(255, 215, 0, 0.5));
+        }
+
+        .event-controls {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 15px;
+        }
+
+        .event-controls button {
+            margin: 0;
+            width: auto;
+            padding: 8px 15px;
+            font-size: 14px;
+        }
+
+        .event-section {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .download-btn {
+            background: linear-gradient(to right, #1a2a6c, #004d40);
+        }
+
+        .update-btn {
+            background: linear-gradient(to right, #004d40, #1a2a6c);
+        }
+
+        .database-info {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+            font-size: 0.9rem;
+        }
+
+        .database-info h4 {
+            color: #4DFF4D;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .sql-code {
+            font-family: monospace;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
+            margin: 10px 0;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+            
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            .user-card {
+                width: 150px;
+            }
+            
+            .logo-container {
+                gap: 15px;
+            }
+            
+            .logo-img {
+                height: 60px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="logo-container">
+        <div class="logo">
+            <i class="fas fa-hands-helping"></i>
+            <p>NSS Unit</p>
+        </div>
+        <div class="logo">
+            <i class="fas fa-university" style="font-size: 3rem;"></i>
+            <p>CMRIT</p>
+        </div>
+    </div>
+    
+    <div class="container">
+        <h1>CMRIT NSS UNIT PORTAL</h1>
+        
+        <!-- Page 1: Password Entry -->
+        <div id="page1" class="page active">
+            <h2>Enter Password to Continue</h2>
+            <div class="input-group">
+                <input type="password" id="password" placeholder="Enter Password">
+            </div>
+            <button onclick="checkPassword()">Enter Portal</button>
+            <p class="password-hint">Hint: CMRIT@NSS2025</p>
+            
+            <div class="instructions">
+                <p><i class="fas fa-info-circle"></i> After entering the password, you can create your NSS portfolio</p>
+                <p><i class="fas fa-info-circle"></i> You'll be able to upload photos and share your NSS experiences</p>
+            </div>
+
+            <!-- <div class="database-info">
+                <h4><i class="fas fa-database"></i> Database Integration</h4>
+                <p>This application simulates database operations. In a real implementation, data would be stored in a SQL database.</p>
+                <div class="sql-code">
+                    -- Example SQL table structure for users<br>
+                    CREATE TABLE users (<br>
+                    &nbsp;&nbsp;id INT AUTO_INCREMENT PRIMARY KEY,<br>
+                    &nbsp;&nbsp;full_name VARCHAR(100) NOT NULL,<br>
+                    &nbsp;&nbsp;roll_number VARCHAR(20) UNIQUE NOT NULL,<br>
+                    &nbsp;&nbsp;branch VARCHAR(50) NOT NULL,<br>
+                    &nbsp;&nbsp;user_photo LONGBLOB,<br>
+                    &nbsp;&nbsp;created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP<br>
+                    );
+                </div>
+            </div> -->
+        </div>
+        
+        <!-- Page 2: Portfolio Form -->
+        <div id="page2" class="page">
+            <h2>Create Your NSS Portfolio</h2>
+            
+            <label for="userPhoto" class="file-input-label">
+                <i class="fas fa-camera"></i> Upload Your Photo
+            </label>
+            <input type="file" id="userPhoto" accept="image/*" onchange="previewPhoto(this, 'userPhotoPreview')">
+            <img id="userPhotoPreview" class="photo-preview" src="" alt="Your Photo">
+            
+            <div class="input-group">
+                <label for="fullName">Full Name</label>
+                <input type="text" id="fullName" placeholder="Enter your full name">
+            </div>
+            
+            <div class="input-group">
+                <label for="rollNumber">Roll Number</label>
+                <input type="text" id="rollNumber" placeholder="Enter your roll number">
+            </div>
+            
+            <div class="input-group">
+                <label for="branch">Branch</label>
+                <select id="branch">
+                    <option value="">Select your branch</option>
+                    <option value="CSE">Computer Science & Engineering</option>
+                    <option value="ECE">Electronics & Communication Engineering</option>
+                    <option value="EEE">Electrical & Electronics Engineering</option>
+                    <option value="ME">Mechanical Engineering</option>
+                    <option value="CE">Civil Engineering</option>
+                    <option value="Other">Other</option>
+                </select>
+            </div>
+            
+            <h3>NSS Events</h3>
+            <div id="eventsContainer">
+                <!-- Event sections will be added here -->
+            </div>
+            
+            <div class="event-controls">
+                <button onclick="addEventSection()"><i class="fas fa-plus"></i> Add Another Event</button>
+                <button onclick="removeEventSection()" style="background: linear-gradient(to right, #ff416c, #c13535);">
+                    <i class="fas fa-minus"></i> Remove Last Event
+                </button>
+            </div>
+            
+            <button onclick="submitPortfolio()"><i class="fas fa-paper-plane"></i> Submit Portfolio</button>
+            <button class="back-button" onclick="goToPage('page1')"><i class="fas fa-arrow-left"></i> Back</button>
+
+            <!-- <div class="database-info">
+                <h4><i class="fas fa-database"></i> Database Operations</h4>
+                <p>When you submit your portfolio, the application would:</p>
+                <div class="sql-code">
+                    -- Insert user data into the database<br>
+                    INSERT INTO users (full_name, roll_number, branch, user_photo)<br>
+                    VALUES (?, ?, ?, ?);<br><br>
+                    
+                    -- Insert events into events table<br>
+                    INSERT INTO events (user_id, event_title, event_description, event_photos)<br>
+                    VALUES (?, ?, ?, ?);
+                </div>
+            </div> -->
+        </div>
+        
+        <!-- Page 3: Portfolio Display -->
+        <div id="page3" class="page">
+            <h2>Your NSS Portfolio</h2>
+            
+            <div class="portfolio-container">
+                <img id="portfolioPhoto" class="portfolio-photo" src="" alt="Portfolio Photo">
+                
+                <div class="portfolio-details">
+                    <p><strong>Name:</strong> <span id="portfolioName"></span></p>
+                    <p><strong>Roll Number:</strong> <span id="portfolioRoll"></span></p>
+                    <p><strong>Branch:</strong> <span id="portfolioBranch"></span></p>
+                </div>
+                
+                <h3>Your NSS Events</h3>
+                <div id="portfolioEvents"></div>
+                
+                <h3>Your Unique QR Code</h3>
+                <div id="qrcode"></div>
+                <p>Scan this QR code to view your portfolio anytime</p>
+                
+                <button class="download-btn" onclick="downloadQRCode()">
+                    <i class="fas fa-download"></i> Download QR Code
+                </button>
+            </div>
+            
+            <button onclick="goToPage('page4')"><i class="fas fa-users"></i> View All Portfolios</button>
+            <button class="update-btn" onclick="editPortfolio()">
+                <i class="fas fa-edit"></i> Update Portfolio
+            </button>
+            <button class="back-button" onclick="goToPage('page2')"><i class="fas fa-arrow-left"></i> Back to Form</button>
+
+            <!-- <div class="database-info">
+                <h4><i class="fas fa-database"></i> Database Retrieval</h4>
+                <p>Your portfolio data would be retrieved from the database with:</p>
+                <div class="sql-code">
+                    -- Get user data<br>
+                    SELECT * FROM users WHERE roll_number = ?;<br><br>
+                    
+                    -- Get user events<br>
+                    SELECT * FROM events WHERE user_id = ?;
+                </div>
+            </div> -->
+        </div>
+        
+        <!-- Page 4: All Portfolios -->
+        <div id="page4" class="page">
+            <h2>NSS Volunteer Portfolios</h2>
+            <p>Click on any volunteer to view their portfolio</p>
+            
+            <div id="userList" class="user-list">
+                <!-- User cards will be generated here -->
+            </div>
+            
+            <button class="back-button" onclick="goToPage('page3')"><i class="fas fa-arrow-left"></i> Back to My Portfolio</button>
+
+            <div class="database-info">
+                <h4><i class="fas fa-database"></i> Database Query</h4>
+                <p>All portfolios are retrieved with:</p>
+                <div class="sql-code">
+                    SELECT id, full_name, roll_number, branch, user_photo<br>
+                    FROM users<br>
+                    ORDER BY created_at DESC;
+                </div>
+            </div>
+        </div>
+        
+        <!-- Page 5: Individual Portfolio View -->
+        <div id="page5" class="page">
+            <h2>NSS Volunteer Portfolio</h2>
+            
+            <div class="portfolio-container">
+                <img id="viewPhoto" class="portfolio-photo" src="" alt="Volunteer Photo">
+                
+                <div class="portfolio-details">
+                    <p><strong>Name:</strong> <span id="viewName"></span></p>
+                    <p><strong>Roll Number:</strong> <span id="viewRoll"></span></p>
+                    <p><strong>Branch:</strong> <span id="viewBranch"></span></p>
+                </div>
+                
+                <h3>NSS Events</h3>
+                <div id="viewEvents"></div>
+            </div>
+            
+            <button class="back-button" onclick="goToPage('page4')"><i class="fas fa-arrow-left"></i> Back to All Portfolios</button>
+
+            <div class="database-info">
+                <h4><i class="fas fa-database"></i> Database Query</h4>
+                <p>This portfolio was retrieved with:</p>
+                <div class="sql-code">
+                    -- Get specific user data<br>
+                    SELECT * FROM users WHERE roll_number = ?;<br><br>
+                    
+                    -- Get user events<br>
+                    SELECT * FROM events WHERE user_id = ?;
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="footer">
+        Welcome to CMRIT NSS Unit - Serving the Community
+    </div>
+
+    <script>
+        // Store user data (simulating database)
+        let users = JSON.parse(localStorage.getItem('nssUsers')) || [];
+        let currentUser = null;
+        let eventCount = 1;
+        
+        // Initialize event sections
+        function initEventSections() {
+            const eventsContainer = document.getElementById('eventsContainer');
+            eventsContainer.innerHTML = '';
+            eventCount = 1;
+            addEventSection();
+        }
+        
+        // Add a new event section
+        function addEventSection() {
+            const eventsContainer = document.getElementById('eventsContainer');
+            
+            const eventSection = document.createElement('div');
+            eventSection.className = 'event-section';
+            eventSection.innerHTML = `
+                <h3>Event #${eventCount}</h3>
+                <div class="input-group">
+                    <label for="eventTitle${eventCount}">Event Title</label>
+                    <input type="text" id="eventTitle${eventCount}" placeholder="Enter event title">
+                </div>
+                
+                <div class="input-group">
+                    <label for="eventDescription${eventCount}">Event Description</label>
+                    <textarea id="eventDescription${eventCount}" rows="3" placeholder="Describe the event..."></textarea>
+                </div>
+                
+                <label for="eventPhotos${eventCount}" class="file-input-label">
+                    <i class="fas fa-images"></i> Upload Event Photos (Multiple)
+                </label>
+                <input type="file" id="eventPhotos${eventCount}" accept="image/*" multiple>
+                
+                <div id="eventPreview${eventCount}" class="events-gallery"></div>
+            `;
+            
+            eventsContainer.appendChild(eventSection);
+            
+            // Add event listener for photo preview
+            const fileInput = document.getElementById(`eventPhotos${eventCount}`);
+            fileInput.addEventListener('change', function() {
+                previewEventPhotos(this, `eventPreview${eventCount}`);
+            });
+            
+            eventCount++;
+        }
+        
+        // Remove the last event section
+        function removeEventSection() {
+            const eventsContainer = document.getElementById('eventsContainer');
+            if (eventsContainer.children.length > 1) {
+                eventsContainer.removeChild(eventsContainer.lastChild);
+                eventCount--;
+            }
+        }
+        
+        // Password check function
+        function checkPassword() {
+            const password = document.getElementById('password').value;
+            const correctPassword = "CMRIT@NSS2025";
+            
+            if (password === correctPassword) {
+                initEventSections();
+                goToPage('page2');
+            } else {
+                alert("Incorrect password. Please try again. Hint: CMRIT@NSS2025");
+            }
+        }
+        
+        // Photo preview function
+        function previewPhoto(input, previewId) {
+            const preview = document.getElementById(previewId);
+            const file = input.files[0];
+            
+            if (file) {
+                const reader = new FileReader();
+                
+                reader.onload = function(e) {
+                    preview.src = e.target.result;
+                }
+                
+                reader.readAsDataURL(file);
+            }
+        }
+        
+        // Event photos preview
+        function previewEventPhotos(input, previewId) {
+            const gallery = document.getElementById(previewId);
+            gallery.innerHTML = '';
+            
+            const files = input.files;
+            
+            if (files) {
+                for (let i = 0; i < files.length; i++) {
+                    const reader = new FileReader();
+                    
+                    reader.onload = function(e) {
+                        const img = document.createElement('img');
+                        img.src = e.target.result;
+                        img.className = 'event-photo';
+                        gallery.appendChild(img);
+                    }
+                    
+                    reader.readAsDataURL(files[i]);
+                }
+            }
+        }
+        
+        // Submit portfolio function
+        function submitPortfolio() {
+            // Get form values
+            const fullName = document.getElementById('fullName').value;
+            const rollNumber = document.getElementById('rollNumber').value;
+            const branch = document.getElementById('branch').value;
+            
+            // Basic validation
+            if (!fullName || !rollNumber || !branch) {
+                alert("Please fill in all required fields.");
+                return;
+            }
+            
+            // Get user photo
+            const userPhoto = document.getElementById('userPhotoPreview').src;
+            
+            // Get events data
+            const events = [];
+            const eventSections = document.querySelectorAll('.event-section');
+            
+            for (let i = 0; i < eventSections.length; i++) {
+                const eventTitle = document.getElementById(`eventTitle${i+1}`).value;
+                const eventDescription = document.getElementById(`eventDescription${i+1}`).value;
+                
+                if (eventTitle) {
+                    // Get event photos
+                    const eventPhotos = [];
+                    const eventFiles = document.getElementById(`eventPhotos${i+1}`).files;
+                    
+                    if (eventFiles.length > 0) {
+                        for (let j = 0; j < eventFiles.length; j++) {
+                            const reader = new FileReader();
+                            
+                            reader.onload = function(e) {
+                                eventPhotos.push(e.target.result);
+                            }
+                            
+                            reader.readAsDataURL(eventFiles[j]);
+                        }
+                    }
+                    
+                    events.push({
+                        title: eventTitle,
+                        description: eventDescription,
+                        photos: eventPhotos
+                    });
+                }
+            }
+            
+            // Check if we have at least one event
+            if (events.length === 0) {
+                alert("Please add at least one event.");
+                return;
+            }
+            
+            // Save user data
+            saveUser(fullName, rollNumber, branch, userPhoto, events);
+        }
+        
+        // Save user data (simulating database storage)
+        function saveUser(fullName, rollNumber, branch, userPhoto, events) {
+            // Check if user already exists
+            const existingUserIndex = users.findIndex(user => user.rollNumber === rollNumber);
+            
+            const userData = {
+                id: existingUserIndex !== -1 ? users[existingUserIndex].id : Date.now(),
+                fullName,
+                rollNumber,
+                branch,
+                userPhoto,
+                events,
+                timestamp: new Date().toISOString()
+            };
+            
+            if (existingUserIndex !== -1) {
+                // Update existing user
+                users[existingUserIndex] = userData;
+                console.log("Simulating UPDATE operation in database for user:", rollNumber);
+            } else {
+                // Add new user
+                users.push(userData);
+                console.log("Simulating INSERT operation in database for new user:", rollNumber);
+            }
+            
+            // Save to localStorage (simulating database)
+            localStorage.setItem('nssUsers', JSON.stringify(users));
+            
+            // Set as current user
+            currentUser = userData;
+            
+            // Display portfolio
+            displayPortfolio(userData);
+            
+            // Go to portfolio page
+            goToPage('page3');
+        }
+        
+        // Display portfolio function
+        function displayPortfolio(userData) {
+            document.getElementById('portfolioPhoto').src = userData.userPhoto;
+            document.getElementById('portfolioName').textContent = userData.fullName;
+            document.getElementById('portfolioRoll').textContent = userData.rollNumber;
+            document.getElementById('portfolioBranch').textContent = userData.branch;
+            
+            // Display events
+            const eventsContainer = document.getElementById('portfolioEvents');
+            eventsContainer.innerHTML = '';
+            
+            userData.events.forEach((event, index) => {
+                const eventElement = document.createElement('div');
+                eventElement.className = 'event-item';
+                
+                eventElement.innerHTML = `
+                    <h4>${event.title}</h4>
+                    <p>${event.description}</p>
+                `;
+                
+                // Add event photos if available
+                if (event.photos && event.photos.length > 0) {
+                    const gallery = document.createElement('div');
+                    gallery.className = 'events-gallery';
+                    
+                    event.photos.forEach(photo => {
+                        const img = document.createElement('img');
+                        img.src = photo;
+                        img.className = 'event-photo';
+                        gallery.appendChild(img);
+                    });
+                    
+                    eventElement.appendChild(gallery);
+                }
+                
+                eventsContainer.appendChild(eventElement);
+            });
+            
+            // Generate QR Code
+            const qrContainer = document.getElementById('qrcode');
+            qrContainer.innerHTML = '';
+            
+            // Create a unique URL for this portfolio
+            const portfolioUrl = `${window.location.origin}${window.location.pathname}?user=${userData.rollNumber}`;
+            
+            new QRCode(qrContainer, {
+                text: portfolioUrl,
+                width: 150,
+                height: 150,
+                colorDark: "#000000",
+                colorLight: "#ffffff",
+                correctLevel: QRCode.CorrectLevel.H
+            });
+        }
+        
+        // Download QR Code
+        function downloadQRCode() {
+            const qrCanvas = document.querySelector('#qrcode canvas');
+            if (qrCanvas) {
+                const link = document.createElement('a');
+                link.download = `CMRIT-NSS-${currentUser.rollNumber}.png`;
+                link.href = qrCanvas.toDataURL('image/png');
+                link.click();
+            }
+        }
+        
+        // Edit portfolio
+        function editPortfolio() {
+            if (!currentUser) return;
+            
+            // Fill form with current data
+            document.getElementById('fullName').value = currentUser.fullName;
+            document.getElementById('rollNumber').value = currentUser.rollNumber;
+            document.getElementById('branch').value = currentUser.branch;
+            document.getElementById('userPhotoPreview').src = currentUser.userPhoto;
+            
+            // Clear existing events
+            initEventSections();
+            
+            // Add events
+            currentUser.events.forEach((event, index) => {
+                if (index > 0) addEventSection();
+                
+                document.getElementById(`eventTitle${index+1}`).value = event.title;
+                document.getElementById(`eventDescription${index+1}`).value = event.description;
+                
+                // Note: Can't pre-fill file inputs for security reasons
+            });
+            
+            goToPage('page2');
+        }
+        
+        // Display user portfolio for viewing
+        function displayUserPortfolio(rollNumber) {
+            const user = users.find(u => u.rollNumber === rollNumber);
+            
+            if (user) {
+                document.getElementById('viewPhoto').src = user.userPhoto;
+                document.getElementById('viewName').textContent = user.fullName;
+                document.getElementById('viewRoll').textContent = user.rollNumber;
+                document.getElementById('viewBranch').textContent = user.branch;
+                
+                // Display events
+                const eventsContainer = document.getElementById('viewEvents');
+                eventsContainer.innerHTML = '';
+                
+                user.events.forEach(event => {
+                    const eventElement = document.createElement('div');
+                    eventElement.className = 'event-item';
+                    
+                    eventElement.innerHTML = `
+                        <h4>${event.title}</h4>
+                        <p>${event.description}</p>
+                    `;
+                    
+                    // Add event photos if available
+                    if (event.photos && event.photos.length > 0) {
+                        const gallery = document.createElement('div');
+                        gallery.className = 'events-gallery';
+                        
+                        event.photos.forEach(photo => {
+                            const img = document.createElement('img');
+                            img.src = photo;
+                            img.className = 'event-photo';
+                            gallery.appendChild(img);
+                        });
+                        
+                        eventElement.appendChild(gallery);
+                    }
+                    
+                    eventsContainer.appendChild(eventElement);
+                });
+                
+                goToPage('page5');
+            }
+        }
+        
+        // Display all users
+        function displayAllUsers() {
+            const userList = document.getElementById('userList');
+            userList.innerHTML = '';
+            
+            if (users.length === 0) {
+                userList.innerHTML = '<p>No portfolios created yet</p>';
+                return;
+            }
+            
+            users.forEach(user => {
+                const card = document.createElement('div');
+                card.className = 'user-card';
+                card.onclick = () => displayUserPortfolio(user.rollNumber);
+                
+                card.innerHTML = `
+                    <img src="${user.userPhoto}" alt="${user.fullName}">
+                    <h3>${user.fullName}</h3>
+                    <p>${user.rollNumber}</p>
+                    <p>${user.branch}</p>
+                `;
+                
+                userList.appendChild(card);
+            });
+        }
+        
+        // Navigate to page
+        function goToPage(pageId) {
+            // Hide all pages
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+            
+            // Show selected page
+            document.getElementById(pageId).classList.add('active');
+            
+            // If going to page4, update the user list
+            if (pageId === 'page4') {
+                displayAllUsers();
+            }
+            
+            // Scroll to top
+            window.scrollTo(0, 0);
+        }
+        
+        // Check if URL has a user parameter
+        function checkUrlParams() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const userParam = urlParams.get('user');
+            
+            if (userParam) {
+                const user = users.find(u => u.rollNumber === userParam);
+                
+                if (user) {
+                    displayUserPortfolio(userParam);
+                    return true;
+                }
+            }
+            
+            return false;
+        }
+        
+        // Initialize the application
+        function init() {
+            // Check if we're viewing a specific portfolio from URL
+            const isViewingPortfolio = checkUrlParams();
+            
+            if (!isViewingPortfolio) {
+                // Show the first page
+                goToPage('page1');
+            }
+            
+            // Animated footer text
+            const footer = document.querySelector('.footer');
+            const text = "Welcome to CMRIT NSS Unit - Serving the Community";
+            footer.innerHTML = '';
+            let index = 0;
+            
+            function typeWriter() {
+                if (index < text.length) {
+                    footer.innerHTML += text.charAt(index);
+                    index++;
+                    setTimeout(typeWriter, 100);
+                }
+            }
+            
+            typeWriter();
+        }
+        
+        // Initialize when page loads
+        window.onload = init;
+    </script>
+</body>
+</html>
